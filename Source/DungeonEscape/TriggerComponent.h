@@ -44,4 +44,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	bool IsPressurePlate = false;
+
+	UPROPERTY(VisibleAnywhere)
+	bool IsTriggered = false;
+	void Trigger();
 };
