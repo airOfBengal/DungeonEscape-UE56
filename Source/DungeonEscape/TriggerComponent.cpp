@@ -46,7 +46,7 @@ void UTriggerComponent::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AAct
 {
 	if (OtherActor && OtherActor->ActorHasTag("Player"))
 	{
-		Trigger();
+		Trigger(true);
 	}
 }
 
@@ -54,16 +54,18 @@ void UTriggerComponent::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor
 {
 	if (OtherActor && OtherActor->ActorHasTag("Player"))
 	{
-		Trigger();
+		Trigger(false);
 	}
 }
 
-void UTriggerComponent::Trigger()
+void UTriggerComponent::Trigger(bool IsTriggered)
 {
-	IsTriggered = !IsTriggered;
-
 	if (Mover)
 	{
 		Mover->ShouldMove = IsTriggered;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("MoverActor is nullptr!"));
 	}
 }
