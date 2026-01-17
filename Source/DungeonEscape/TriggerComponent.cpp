@@ -46,7 +46,12 @@ void UTriggerComponent::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AAct
 {
 	if (OtherActor && OtherActor->ActorHasTag("Player"))
 	{
-		Trigger(true);
+		ActivatorCount++;
+
+		if (!IsTriggered && ActivatorCount > 0) 
+		{
+			Trigger(true);
+		}
 	}
 }
 
@@ -54,15 +59,22 @@ void UTriggerComponent::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor
 {
 	if (OtherActor && OtherActor->ActorHasTag("Player"))
 	{
-		Trigger(false);
+		ActivatorCount--;
+
+		if (IsTriggered && ActivatorCount == 0)
+		{
+			Trigger(false);
+		}
 	}
 }
 
-void UTriggerComponent::Trigger(bool IsTriggered)
+void UTriggerComponent::Trigger(bool NewIsTriggered)
 {
+	IsTriggered = NewIsTriggered;
+
 	if (Mover)
 	{
-		Mover->ShouldMove = IsTriggered;
+		Mover->SetShouldMove(IsTriggered);
 	}
 	else
 	{
